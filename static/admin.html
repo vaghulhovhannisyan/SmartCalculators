@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Админка привязки SKU</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .admin-grid { max-width: 900px; margin: 40px auto; padding: 20px; }
+  .admin-grid textarea { width: 100%; min-height: 80px; padding: 10px;
+    font-family: monospace; border-radius: 8px; border: 1px solid #e5e7eb; }
+  .match-row { padding: 10px; border-left: 3px solid var(--brand);
+    background: #fff7ed; margin: 6px 0; border-radius: 6px; }
+  .match-row.best { background: #fff1f2; font-weight: 600; }
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>Админка привязки SKU к категориям</h1>
+  <p>ML сам предлагает категорию и подходящие помещения</p>
+</header>
+
+<main class="admin-grid card">
+  <label>Тексты SKU (по одному на строку):
+    <textarea id="skus">Обои флизелиновые влагостойкие для кухни 1.06×10 м
+Керамогранит для пола 60×60 влагостойкий
+Кабель ВВГнг-LS 3×2.5</textarea>
+  </label>
+  <button onclick="matchAll()">Подобрать категории</button>
+  <div id="adminResult" class="result"></div>
+</main>
+
+<script>
+const API = "http://localhost:8080";
+
+async function matchAll(){
+  const box = document.getElementById("adminResult");
+  box.textContent = "Матчинг…";
+  const skus = document.getElementById("skus").value
+    .split("\n").map(s => s.trim()).filter(Boolean);
+  try{
+    const r = await fetch(API + "/api/match/sku", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({skus})
+    });
+    const d = await r.json();
+    box.innerHTML = d.results.map(item => `
+      <div class="match-row best">
+        <div>${item.sku}</div>
+        <div style="margin-top:6px;font-size:13px;color:var(--muted)">
+          Категория: <b>${item.matches[0].category}</b>
+          (score ${item.matches[0].score.toFixed(2)})
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">
+          Другие варианты: ${item.matches.slice(1).map(m =>
+            m.category + " (" + m.score.toFixed(2) + ")").join(", ")}
+        </div>
+      </div>`).join("");
+  }catch(e){ box.textContent = "Ошибка: " + e.message; }
+}
+</script>
+</body>
+</html>

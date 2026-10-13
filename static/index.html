@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Максидом — Умный калькулятор ремонта</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <h1>Умный калькулятор ремонта</h1>
+  <p>Смета материалов и работ за 30 секунд</p>
+</header>
+
+<main class="grid">
+  <section class="card">
+    <h2>1. Общий калькулятор</h2>
+    <label>Тип объекта
+      <select id="objectType">
+        <option value="flat">Квартира</option>
+        <option value="house">Дом</option>
+        <option value="studio">Студия</option>
+      </select>
+    </label>
+    <label>Тип ремонта
+      <select id="repairType">
+        <option value="cosmetic">Косметический</option>
+        <option value="capital">Капитальный</option>
+        <option value="designer">Дизайнерский</option>
+      </select>
+    </label>
+    <label>Площадь, м² <input id="area" type="number" value="40" min="1"></label>
+    <label>Высота потолка, м <input id="height" type="number" value="2.7" step="0.1"></label>
+    <button onclick="calcGeneral()">Рассчитать смету</button>
+    <div id="generalResult" class="result"></div>
+  </section>
+
+  <section class="card">
+    <h2>2. Специфика помещения</h2>
+    <label>Тип помещения
+      <select id="roomType">
+        <option>санузел</option><option>кухня</option>
+        <option>детская</option><option>балкон</option>
+        <option>спальня</option><option>гостиная</option>
+      </select>
+    </label>
+    <label>Влажность, %
+      <input id="humidity" type="range" min="20" max="100" value="60"
+             oninput="document.getElementById('humVal').textContent=this.value">
+      <span id="humVal">60</span>%
+    </label>
+    <label>Нагрузка
+      <select id="load">
+        <option>низкая</option><option selected>средняя</option><option>высокая</option>
+      </select>
+    </label>
+    <label>Площадь, м² <input id="roomArea" type="number" value="6" min="1"></label>
+    <button onclick="calcRoom()">Подобрать материалы</button>
+    <div id="roomResult" class="result"></div>
+  </section>
+
+  <section class="card">
+    <h2>3. Расчёт в карточке товара</h2>
+    <label>Тип товара
+      <select id="productType">
+        <option>обои</option><option>плитка</option>
+        <option>ламинат</option><option>краска</option>
+        <option>клей_плитка</option>
+      </select>
+    </label>
+    <label>Ширина поверхности, м <input id="pWidth" type="number" value="4" step="0.1"></label>
+    <label>Высота поверхности, м <input id="pHeight" type="number" value="2.7" step="0.1"></label>
+    <button onclick="calcProduct()">Сколько нужно?</button>
+    <div id="productResult" class="result"></div>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

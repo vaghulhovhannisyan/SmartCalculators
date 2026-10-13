@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual env
+.venv/
+venv/
+env/
+ENV/
+
+# ML cache
+.cache/
+models/
+*.safetensors
+*.bin
+*.pt
+*.pth
+data/sku_embeddings.npz
+
+# IDE
+.vscode/*
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+.env.local
+*.key
+*.pem
+
+# Logs and tests
+*.log
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Data
+data/*.csv
+data/*.json
+!data/.gitkeep
